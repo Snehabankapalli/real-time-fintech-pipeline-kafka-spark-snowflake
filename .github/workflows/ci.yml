@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    env:
+      PII_TOKENIZATION_SECRET: ${{ secrets.PII_TOKENIZATION_SECRET || 'ci-test-secret-not-for-production' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-mock
+
+          # Install lightweight deps only (skip pyspark/confluent for unit tests)
+          pip install dataclasses-json 2>/dev/null || true
+
+      - name: Run unit tests (no Spark/Kafka cluster required)
+        run: |
+          pytest tests/test_transformations.py tests/test_pii_tokenizer.py tests/test_transaction_producer.py \
+            --cov=src \
+            --cov-report=term-missing \
+            -v
+        env:
+          PII_TOKENIZATION_SECRET: ci-test-secret-not-for-production
+
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 src/ tests/ --max-line-length=100 --ignore=E501,W503,E402
