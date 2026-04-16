@@ -8,6 +8,8 @@
 ![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=flat&logo=snowflake&logoColor=white)
 ![AWS EMR](https://img.shields.io/badge/AWS_EMR-FF9900?style=flat&logo=amazonaws&logoColor=white)
 ![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat&logo=dbt&logoColor=white)
+[![CI](https://github.com/Snehabankapalli/real-time-fintech-pipeline-kafka-spark-snowflake/actions/workflows/ci.yml/badge.svg)](https://github.com/Snehabankapalli/real-time-fintech-pipeline-kafka-spark-snowflake/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
@@ -191,3 +193,21 @@ pytest tests/ -v
 - Data contracts at the Kafka consumer boundary using Great Expectations
 - Apache Flink for sub-100ms latency on authorization decisions
 - Expanded DataDog composite alerts for correlated pipeline failures
+
+---
+
+## 9. Architecture Diagrams
+
+Full Mermaid architecture diagrams (system flow, data layers, Kafka partitioning, dbt layers, cost optimization, monitoring) in [.github/ARCHITECTURE.md](.github/ARCHITECTURE.md).
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for setup, workflow, and code style guidelines.
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
