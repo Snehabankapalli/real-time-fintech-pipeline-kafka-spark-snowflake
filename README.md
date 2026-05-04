@@ -1,6 +1,8 @@
-# Real-Time Fintech Data Pipeline (Kafka → Spark → Snowflake)
+# Real-Time Fintech Data Platform
 
-> Processes real-time financial transactions at **1M+ events/day** with sub-second latency, CFPB-compliant reporting, and 99.9% uptime. Built for a credit card platform serving 1M+ active cardholders.
+> Kafka → Spark Structured Streaming → Snowflake → dbt → Observability
+
+Processes real-time credit card events for analytics, fraud detection, and CFPB-style regulatory reporting. Built for 1M+ events/day, sub-second processing latency, and 99.9% uptime.
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
 ![Apache Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)
@@ -13,208 +15,228 @@
 
 ---
 
-## 1. What This System Does
+## What This System Does
 
-Ingests real-time financial transactions from a credit card platform, processes them through a streaming pipeline, and delivers them to Snowflake for analytics, CFPB regulatory reporting, and fraud detection.
+Ingests real-time financial transaction events from a credit card platform, processes them through a streaming pipeline, and delivers clean, tokenized, deduplicated data to Snowflake for analytics, CFPB regulatory reporting, and fraud detection.
 
 - **High-throughput ingestion** — 1M+ card events/day (authorizations, settlements, refunds, chargebacks) via Kafka MSK
 - **Sub-second processing** — PySpark Structured Streaming on AWS EMR Serverless with 10-second micro-batches
 - **Production reliability** — Dead-letter queues, schema registry, exactly-once semantics, automated DLQ alerting
-- **Compliance-ready** — PII tokenized at ingestion, CFPB monthly reports auto-generated from dbt marts
-- **Cost-optimized** — Reduced pipeline runtime 83% (24h → 4h) and delivered $140K annual savings
+- **Compliance-ready** — PII tokenized at ingestion (HMAC-SHA256), CFPB monthly reports auto-generated from dbt marts
+- **Cost-optimized** — EMR Serverless reduces pipeline cost by 83% vs fixed cluster; auto-suspend Snowflake cuts warehouse spend 10x
 
 ---
 
-## 2. Architecture
+## Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
-│  SOURCES                                                                 │
-│  Card Authorizations · Settlements · Refunds · Chargebacks · Fee Events  │
-└────────────────────────────────┬─────────────────────────────────────────┘
-                                 │
-                    ┌────────────▼─────────────┐
-                    │     Apache Kafka (MSK)    │
-                    │                          │
-                    │  Schema Registry (Avro)  │  ← Rejects malformed events
-                    │  Dead-Letter Queue (DLQ) │  ← Bad messages isolated
-                    └────────────┬─────────────┘
-                                 │
-                    ┌────────────▼─────────────┐
-                    │   AWS EMR Serverless      │
-                    │   PySpark Streaming       │
-                    │                          │
-                    │  parse → validate         │
-                    │  tokenize PII (HMAC)      │
-                    │  enrich (MCC, flags)      │
-                    │  deduplicate              │
-                    └────────────┬─────────────┘
-                                 │ micro-batch write (10s)
-          ┌──────────────────────▼──────────────────────────┐
-          │                  Snowflake                       │
-          │                                                  │
-          │  RAW          → append-only, 90d retention       │
-          │  STAGING      → dedupe, type-cast, rename        │
-          │  INTERMEDIATE → enrichment, joins, signals       │
-          │  MARTS        → fct_transactions                 │
-          │                 rpt_cfpb_monthly (CFPB filing)   │
-          │                 rpt_executive_kpis               │
-          └──────────────────────┬──────────────────────────┘
-                                 │
-          ┌──────────────────────▼──────────────────────────┐
-          │  CONSUMERS                                       │
-          │  BI Dashboards · CFPB Filing · Fraud Detection   │
-          └──────────────────────────────────────────────────┘
+Card Events (authorizations, settlements, refunds, chargebacks)
+        │
+        ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│  Apache Kafka (AWS MSK)                                                   │
+│  Topics: card-transactions (12 partitions) / card-transactions-dlq        │
+│  Schema Registry: Avro enforcement, rejects malformed events at boundary  │
+└────────────────────┬──────────────────────────────────────────────────────┘
+                     │
+                     ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│  PySpark Structured Streaming (AWS EMR Serverless)                        │
+│                                                                           │
+│  1. Parse JSON → schema enforcement (src/spark/schema.py)                 │
+│  2. Validate required fields → DLQ on failure (src/spark/dlq_handler.py)  │
+│  3. Tokenize account_id HMAC-SHA256 (src/spark/pii_tokenizer.py)          │
+│  4. Deduplicate by transaction_id (src/spark/deduplication.py)            │
+│  5. Enrich: merchant flags, latency (src/spark/streaming_job.py)          │
+│  6. Write to Snowflake RAW schema (10-second micro-batch)                 │
+└────────────────────┬──────────────────────────────────────────────────────┘
+                     │
+                     ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│  Snowflake                                                                │
+│  RAW          → append-only, 90-day S3 retention                         │
+│  STAGING      → stg_card_transactions (type cast, dedupe, rename)        │
+│  INTERMEDIATE → int_transaction_enriched (flags, tiers, dates)           │
+│  MARTS        → fct_transactions (incremental, clustered by event_date)  │
+│                 rpt_cfpb_monthly (regulatory report)                     │
+│                 rpt_executive_kpis (daily dashboard)                     │
+└────────────────────┬──────────────────────────────────────────────────────┘
+                     │
+                     ▼
+            BI Dashboards · Fraud Detection · CFPB Filing
 
-  Monitoring: DataDog (consumer lag, throughput, p99 latency)
-  Alerting:   Slack (DLQ spikes, SLA breaches, job failures)
+Observability: Prometheus (consumer lag, DLQ rate, p99 latency) + Slack alerts
 ```
+
+Full architecture detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ---
 
-## 3. Scale and Impact
+## Scale Assumptions
 
-| Metric | Value |
-|--------|-------|
-| Daily event volume | 1M+ transactions |
-| End-to-end latency (p99) | < 2 seconds |
-| Pipeline runtime improvement | 83% (24h → 4h) |
-| Annual cost savings | $140K |
-| Consumer lag (steady state) | < 500 messages |
-| DLQ rate | < 0.01% |
-| Pipeline uptime | 99.9% |
-| Active cardholders supported | 1M+ |
+| Metric | Target |
+|--------|--------|
+| Daily events | 1M+ |
+| p99 end-to-end latency | < 2 seconds |
+| Pipeline uptime | 99.9% SLA |
+| DLQ rate | < 0.01% of events |
+| Snowflake freshness | < 15 minutes |
+| Batch time (vs legacy) | 83% reduction |
 
 ---
 
-## 4. Tech Stack
+## Failure Scenarios Handled
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Event streaming | Apache Kafka (AWS MSK) | High-throughput, durable, replay-capable |
-| Schema enforcement | Confluent Schema Registry (Avro) | Prevents bad data at the source |
-| Stream processing | PySpark Structured Streaming | Exactly-once semantics, mature ecosystem |
-| Compute | AWS EMR Serverless | Zero cluster management, auto-scaling |
-| Warehouse | Snowflake | Result caching, zero-copy clones, multi-cluster |
-| Transformation | dbt | Version-controlled SQL, built-in testing |
-| Orchestration | Apache Airflow | Retry logic, SLA callbacks |
-| Infrastructure | Terraform | Repeatable, version-controlled deployments |
-| Monitoring | DataDog | Consumer lag tracking, anomaly detection |
+| Scenario | Handling |
+|----------|----------|
+| Schema mismatch | Routed to DLQ with failure reason. Replay via `src/replay/replay_dlq.py`. |
+| Duplicate transactions | `dropDuplicates` in Spark + MERGE on Snowflake — exactly-once guaranteed. |
+| Snowflake write failure | Spark checkpoint preserves Kafka offset. Auto-retry with exponential backoff. |
+| Kafka consumer lag spike | Prometheus alert at lag > 1000. Scale EMR Serverless max workers. |
+| Late-arriving data | 2-hour Spark watermark + 3-day dbt incremental lookback window. |
+| PII tokenization failure | Job fails fast — no degraded mode where raw PII could reach Snowflake. |
 
----
-
-## 5. Key Engineering Decisions
-
-**Why streaming over batch?**
-Credit card authorizations require near-real-time fraud signals and same-day CFPB reporting. A 24-hour batch window was causing compliance delays. Streaming reduced that window to 2 seconds.
-
-**Partitioning strategy**
-Kafka topics partitioned by `account_id` hash — guarantees ordering per account while enabling parallel consumer scaling. Snowflake tables clustered by `event_date` for query pruning.
-
-**Idempotent processing**
-Kafka producers use `enable.idempotence=true` + `acks=all`. PySpark deduplicates on `transaction_id` within each micro-batch. Snowflake merge strategy handles late-arriving records downstream.
-
-**Schema evolution**
-Confluent Schema Registry with backward-compatible Avro evolution. New optional fields can be added without breaking existing consumers. Breaking changes require a new topic version.
-
-**PII strategy**
-Account IDs tokenized with HMAC-SHA256 before any data touches Snowflake. Tokens are deterministic (enables joins without raw PII) and irreversible. Secret rotated every 90 days via AWS Secrets Manager.
-
-**Dead-letter queue**
-Malformed messages routed to `transactions-dlq` with full metadata (offset, partition, error reason). A spike above 10 DLQ messages/minute triggers a Slack alert. Messages are replayable after the root cause is fixed.
+Full failure runbook: [docs/FAILURE_SCENARIOS.md](docs/FAILURE_SCENARIOS.md)
 
 ---
 
-## 6. Sample Output
+## Data Quality
 
-**Streaming job log (steady state):**
-```
-2026-03-26 09:14:02  Batch 1847 written: 8,432 rows  total: 1,284,091 rows  lag: 214 msgs
-2026-03-26 09:14:12  Batch 1848 written: 7,891 rows  total: 1,291,982 rows  lag: 198 msgs
-2026-03-26 09:14:22  Batch 1849 written: 9,104 rows  total: 1,301,086 rows  lag: 211 msgs
+**Layer 1 — Kafka Schema Registry:** Avro schema enforced at producer. Malformed events rejected before entering topic.
+
+**Layer 2 — Spark validation:** Required fields checked in-stream. Invalid records routed to DLQ, never reach Snowflake.
+
+**Layer 3 — dbt tests:** Run after every load. Block downstream marts on failure.
+
+```yaml
+fct_transactions:
+  - transaction_id: [not_null, unique]
+  - account_token:  [not_null]
+  - event_type:     [accepted_values: authorization/settlement/refund/chargeback]
+  - amount_usd:     [not_null]
+  - freshness:      warn > 15 min, error > 60 min
 ```
 
-**dbt run:**
-```
-09:20:03  Found 52 models, 187 tests, 4 sources
-09:20:08  stg_card_transactions ......... INSERT 847,392 rows  [6.02s]
-09:24:31  rpt_cfpb_monthly .............. SELECT 13 rows      [1.84s]
-09:24:33  Completed successfully. 187/187 tests passed.
-```
+**Layer 4 — Custom test:** `dbt/tests/assert_no_negative_settled_amounts.sql`
 
-**CFPB monthly report:**
-```
-EVENT_MONTH  TRANSACTIONS  CARDHOLDERS   VOLUME_USD       DISPUTE_RATE
-2026-03-01   28,471,204    1,041,822     $892,441,827     0.031%
-2026-02-01   26,983,441    1,018,447     $841,293,114     0.029%
-```
+Full data quality spec: [docs/DATA_QUALITY.md](docs/DATA_QUALITY.md)
 
 ---
 
-## 7. How to Run
+## Observability
+
+Prometheus metrics exposed at `:9000/metrics`:
+
+| Metric | Alert Threshold |
+|--------|----------------|
+| `kafka_consumer_lag_total` | > 1000 for 5 min |
+| `dlq_events_per_minute` | > 10 for 2 min |
+| `pipeline_latency_p99_seconds` | > 5s for 5 min |
+| `events_processed_per_second` | < 200 for 10 min |
+
+Slack alerts fire to `#data-oncall` on any critical threshold breach.
+
+---
+
+## Cost Optimization
+
+| Decision | Impact |
+|----------|--------|
+| EMR Serverless vs fixed cluster | ~$415/month savings per pipeline |
+| Snowflake auto-suspend (60s) | 10x reduction in warehouse spend |
+| 10-second micro-batch | 10x fewer Snowflake write transactions |
+| dbt incremental (3-day lookback) | 83% reduction in compute vs full refresh |
+| S3 Glacier for data > 90 days | $4/TB vs $40/TB in Snowflake |
+
+Full cost breakdown: [docs/COST_OPTIMIZATION.md](docs/COST_OPTIMIZATION.md)
+
+---
+
+## How to Run
 
 ```bash
-git clone https://github.com/Snehabankapalli/real-time-fintech-pipeline-kafka-spark-snowflake
-cd real-time-fintech-pipeline-kafka-spark-snowflake
+# 1. Start local Kafka stack
+make up
+# Kafka UI: http://localhost:8080 | Prometheus: http://localhost:9090
 
-# Start local Kafka + Schema Registry + Kafka UI
-docker-compose -f docker/docker-compose.yml up -d
-
-# Install dependencies
+# 2. Install dependencies
 pip install -r requirements.txt
+cp .env.example .env  # fill in your values
 
-# Set environment variables (never hardcode these)
-export PII_TOKENIZATION_SECRET=your-secret
-export SNOWFLAKE_ACCOUNT=your-account
-export SNOWFLAKE_USER=pipeline_user
-export SNOWFLAKE_PASSWORD=your-password
+# 3. Produce events (good + bad to test DLQ)
+make producer       # clean events
+make bad-producer   # 10% corrupt events
 
-# Run synthetic producer (1,000 events/sec)
-python src/producer/transaction_producer.py --topic transactions --rate 1000
+# 4. Run Spark consumer
+make spark
 
-# Run Spark streaming job locally
-python src/spark/streaming_job.py --env local --checkpoint /tmp/checkpoint
+# 5. Replay DLQ
+make replay-dlq
 
-# Open Kafka UI at http://localhost:8080
+# 6. Run dbt transformations
+make dbt-run && make dbt-test
 
-# Run dbt models
-dbt run --select tag:fintech
-dbt test --select tag:fintech
-
-# Run unit tests
-pytest tests/ -v
+# 7. Run tests
+make test
 ```
 
 ---
 
-## 8. Future Improvements
+## Project Structure
 
-- ML-based anomaly detection on transaction volume and fraud velocity signals
-- Data contracts at the Kafka consumer boundary using Great Expectations
-- Apache Flink for sub-100ms latency on authorization decisions
-- Expanded DataDog composite alerts for correlated pipeline failures
+```
+.
+├── src/
+│   ├── producer/         # Kafka event generator + bad event simulator
+│   ├── spark/            # Streaming job, schema, PII tokenizer, deduplication, DLQ handler
+│   ├── monitoring/       # Prometheus metrics, Prometheus alert rules, Slack notifier
+│   └── replay/           # DLQ inspector and replay script
+├── dbt/
+│   ├── models/
+│   │   ├── staging/      # stg_card_transactions
+│   │   ├── intermediate/ # int_transaction_enriched
+│   │   └── marts/        # fct_transactions, rpt_cfpb_monthly, rpt_executive_kpis
+│   └── tests/            # assert_no_negative_settled_amounts
+├── tests/                # Unit tests: schema, PII, deduplication, DLQ handler
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── FAILURE_SCENARIOS.md
+│   ├── COST_OPTIMIZATION.md
+│   ├── DATA_QUALITY.md
+│   └── INTERVIEW_TALKING_POINTS.md
+├── docker-compose.yml    # Kafka + Zookeeper + Kafka UI + Prometheus
+├── Makefile              # One-command dev workflow
+└── .env.example
+```
 
 ---
 
-## 9. Architecture Diagrams
+## Interview Talking Points
 
-Full Mermaid architecture diagrams (system flow, data layers, Kafka partitioning, dbt layers, cost optimization, monitoring) in [.github/ARCHITECTURE.md](.github/ARCHITECTURE.md).
+Five things a hiring manager should ask you about:
 
----
+1. **Exactly-once semantics** — idempotent producer + Spark checkpoint + Snowflake MERGE on primary key
+2. **DLQ design** — not a graveyard, a queue. Bad events are repaired and replayed with version-controlled logic
+3. **PII strategy** — HMAC-SHA256 at the Spark layer, account_id dropped from schema before Snowflake write, deterministic tokenization enables cross-table joins on token
+4. **Cost vs latency tradeoff** — 10-second micro-batch reduces Snowflake write transactions 10x with only 9 seconds of additional latency (acceptable for BI/reporting use case)
+5. **Failure recovery** — Spark checkpoint preserves Kafka offsets, so any Snowflake failure replays from last commit automatically. No manual intervention needed.
 
+Full talking points: [docs/INTERVIEW_TALKING_POINTS.md](docs/INTERVIEW_TALKING_POINTS.md)
 
 ---
 
 ## Related Portfolio Systems
 
-- [Data Engineering Observability Platform](https://github.com/Snehabankapalli/data-engineering-observability-platform) — monitoring and alerting layer that sits on top of platforms like this
+- [Data Engineering Observability Platform](https://github.com/Snehabankapalli/data-engineering-observability-platform) — monitoring layer built for platforms like this
 - [Modern Data Platform Migration](https://github.com/Snehabankapalli/modern-data-platform-migration) — batch migration patterns that complement this streaming system
-- [HIPAA-Compliant Data Lake](https://github.com/Snehabankapalli/hipaa-data-lake-aws) — regulated variant of this pipeline architecture for healthcare data
+- [HIPAA-Compliant Data Lake](https://github.com/Snehabankapalli/hipaa-data-lake-aws) — regulated healthcare variant of this architecture
 - [GenAI Data Engineering Portfolio](https://github.com/Snehabankapalli/genai-de-portfolio) — AI tooling for intelligent pipeline management
+
+---
 
 ## Contributing
 
-See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for setup, workflow, and code style guidelines.
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for setup, workflow, and code style.
 
 ---
 
