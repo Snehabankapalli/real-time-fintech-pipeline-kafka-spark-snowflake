@@ -13,6 +13,9 @@ Processes real-time credit card events for analytics, fraud detection, and CFPB-
 [![CI](https://github.com/Snehabankapalli/real-time-fintech-pipeline-kafka-spark-snowflake/actions/workflows/ci.yml/badge.svg)](https://github.com/Snehabankapalli/real-time-fintech-pipeline-kafka-spark-snowflake/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+![Demo](demo.gif)
+
+
 ---
 
 ## What This System Does
