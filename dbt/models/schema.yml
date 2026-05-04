@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: fct_transactions
+    description: Core fact table. One row per card transaction event.
+    columns:
+      - name: transaction_id
+        description: Unique event identifier.
+        tests:
+          - not_null
+          - unique
+      - name: account_token
+        description: HMAC token of account_id. Never contains raw PII.
+        tests:
+          - not_null
+      - name: event_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: [authorization, settlement, refund, chargeback]
+      - name: amount_usd
+        tests:
+          - not_null
+      - name: processing_latency_seconds
+        description: Seconds between event_timestamp and processed_at.
+        tests:
+          - not_null
+
+  - name: rpt_cfpb_monthly
+    description: Monthly regulatory summary for CFPB-style reporting.
+    columns:
+      - name: event_month
+        tests: [not_null, unique]
+      - name: dispute_rate
+        tests: [not_null]
+
+  - name: rpt_executive_kpis
+    description: Daily executive KPI summary.
+    columns:
+      - name: report_date
+        tests: [not_null, unique]
