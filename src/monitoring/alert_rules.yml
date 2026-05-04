@@ -1,0 +1,43 @@
+groups:
+  - name: fintech_pipeline_alerts
+    rules:
+
+      - alert: HighConsumerLag
+        expr: kafka_consumer_lag_total > 1000
+        for: 5m
+        labels:
+          severity: warning
+          team: data-engineering
+        annotations:
+          summary: "Kafka consumer lag above threshold"
+          description: "Consumer lag is {{ $value }} events. Investigate Spark job throughput."
+
+      - alert: DLQSpike
+        expr: dlq_events_per_minute > 10
+        for: 2m
+        labels:
+          severity: critical
+          team: data-engineering
+        annotations:
+          summary: "DLQ spike detected"
+          description: "DLQ rate is {{ $value }} events/min. Schema mismatch or upstream change."
+
+      - alert: PipelineLatenySLABreach
+        expr: pipeline_latency_p99_seconds > 5
+        for: 5m
+        labels:
+          severity: critical
+          team: data-engineering
+        annotations:
+          summary: "Pipeline latency exceeded 5-second SLA"
+          description: "p99 latency is {{ $value }}s. Check EMR Serverless scaling and Snowflake warehouse."
+
+      - alert: LowThroughput
+        expr: events_processed_per_second < 200
+        for: 10m
+        labels:
+          severity: warning
+          team: data-engineering
+        annotations:
+          summary: "Pipeline throughput below expected baseline"
+          description: "Processing {{ $value }} events/sec. Expected 800+."
