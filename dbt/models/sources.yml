@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: raw
+    database: FINTECH
+    schema: RAW
+    description: Raw card transaction events written by Spark Structured Streaming.
+    tables:
+      - name: card_transactions
+        description: Append-only raw events from the Kafka consumer.
+        freshness:
+          warn_after:
+            count: 15
+            period: minute
+          error_after:
+            count: 60
+            period: minute
+        columns:
+          - name: transaction_id
+            description: UUID assigned by the producer. Primary deduplication key.
+          - name: account_token
+            description: HMAC-SHA256 token of account_id. Raw account_id never stored.
+          - name: event_type
+            description: One of authorization, settlement, refund, chargeback.
+          - name: amount
+            description: Transaction amount in USD.
+          - name: event_timestamp
+            description: ISO-8601 timestamp from the originating system.
+          - name: processed_at
+            description: Timestamp when Spark wrote the record to Snowflake.
