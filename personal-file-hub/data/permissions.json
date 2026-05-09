@@ -1,0 +1,170 @@
+[
+  {
+    "id": "perm-001",
+    "agentId": "fitness-coach",
+    "dataSource": "apple-health",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-002",
+    "agentId": "fitness-coach",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-003",
+    "agentId": "fitness-coach",
+    "dataSource": "claude-files",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-004",
+    "agentId": "finance-advisor",
+    "dataSource": "bank-csv",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": true
+  },
+  {
+    "id": "perm-005",
+    "agentId": "finance-advisor",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-006",
+    "agentId": "career-coach",
+    "dataSource": "github",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-007",
+    "agentId": "career-coach",
+    "dataSource": "claude-files",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-008",
+    "agentId": "career-coach",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-009",
+    "agentId": "personal-ops-agent",
+    "dataSource": "google-calendar",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": true
+  },
+  {
+    "id": "perm-010",
+    "agentId": "personal-ops-agent",
+    "dataSource": "notion",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-011",
+    "agentId": "personal-ops-agent",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-012",
+    "agentId": "relationship-reflection-agent",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": true
+  },
+  {
+    "id": "perm-013",
+    "agentId": "skincare-tracker",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-014",
+    "agentId": "skincare-tracker",
+    "dataSource": "photos-upload",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-015",
+    "agentId": "meal-prep-agent",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-016",
+    "agentId": "meal-prep-agent",
+    "dataSource": "apple-health",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-017",
+    "agentId": "job-search-agent",
+    "dataSource": "github",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-018",
+    "agentId": "job-search-agent",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-019",
+    "agentId": "job-search-agent",
+    "dataSource": "claude-files",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-020",
+    "agentId": "home-garden-agent",
+    "dataSource": "google-calendar",
+    "readAllowed": true,
+    "writeAllowed": false,
+    "requiresApproval": false
+  },
+  {
+    "id": "perm-021",
+    "agentId": "home-garden-agent",
+    "dataSource": "local-notes",
+    "readAllowed": true,
+    "writeAllowed": true,
+    "requiresApproval": false
+  }
+]

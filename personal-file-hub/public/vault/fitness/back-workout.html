@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back Workout Plan</title>
+<style>
+  :root { --bg:#080811;--surface:#111122;--border:#1a1a2e;--accent:#7c3aed;--green:#10b981;--text:#f8f8f2;--muted:#6e6e8a; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:2rem;min-height:100vh;}
+  h1{font-size:1.8rem;font-weight:700;margin-bottom:.25rem;background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .subtitle{color:var(--muted);font-size:.9rem;margin-bottom:2rem;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1rem;text-align:center;}
+  .stat-num{font-size:1.8rem;font-weight:700;color:var(--accent);}
+  .stat-label{font-size:.8rem;color:var(--muted);margin-top:.25rem;}
+  .section{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1.5rem;margin-bottom:1rem;}
+  .section-title{font-size:1rem;font-weight:600;color:#a78bfa;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;}
+  .exercise{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid var(--border);}
+  .exercise:last-child{border-bottom:none;}
+  .ex-name{font-weight:500;font-size:.95rem;}
+  .ex-sets{display:flex;gap:.5rem;}
+  .set-badge{background:var(--accent);color:white;border-radius:.375rem;padding:.2rem .5rem;font-size:.75rem;font-weight:600;}
+  .check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;flex-shrink:0;}
+  .check.done{background:var(--green);border-color:var(--green);}
+  .check:hover{border-color:var(--accent);}
+  .ex-left{display:flex;align-items:center;gap:.75rem;}
+  .notes-box{background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.2);border-radius:.5rem;padding:1rem;margin-top:1rem;font-size:.85rem;color:var(--muted);}
+  .progress-bar{height:6px;background:var(--border);border-radius:3px;margin-top:1rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa);border-radius:3px;transition:width .5s ease;}
+  .progress-label{display:flex;justify-content:space-between;margin-top:.5rem;font-size:.8rem;color:var(--muted);}
+</style>
+</head>
+<body>
+<h1>Back Workout Plan</h1>
+<p class="subtitle">Upper & Lower Back Strength · Created by Claude</p>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Exercises</div></div>
+  <div class="stat"><div class="stat-num">45</div><div class="stat-label">Minutes</div></div>
+  <div class="stat"><div class="stat-num" id="done-count">0</div><div class="stat-label">Completed</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">Warm-Up</div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Cat-Cow Stretch</div></div>
+    <div class="ex-sets"><span class="set-badge">3×10</span></div>
+  </div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Thoracic Rotation</div></div>
+    <div class="ex-sets"><span class="set-badge">2×8</span><span class="set-badge">each side</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Main Block</div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Deadlift</div></div>
+    <div class="ex-sets"><span class="set-badge">4×6</span><span class="set-badge">heavy</span></div>
+  </div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Bent-Over Row</div></div>
+    <div class="ex-sets"><span class="set-badge">3×10</span></div>
+  </div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Pull-Ups / Lat Pulldown</div></div>
+    <div class="ex-sets"><span class="set-badge">3×8</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Accessory</div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Face Pulls</div></div>
+    <div class="ex-sets"><span class="set-badge">3×15</span></div>
+  </div>
+  <div class="exercise">
+    <div class="ex-left"><div class="check" onclick="toggle(this)"></div><div class="ex-name">Good Mornings</div></div>
+    <div class="ex-sets"><span class="set-badge">3×12</span></div>
+  </div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+<div class="progress-label"><span>Progress</span><span id="progress-text">0 / 7 done</span></div>
+
+<div class="notes-box">💡 <strong>Coach note:</strong> Focus on mind-muscle connection during rows. Keep core braced during deadlifts. Rest 90s between sets.</div>
+
+<script>
+  const total = 7;
+  function toggle(el){
+    el.classList.toggle('done');
+    const done = document.querySelectorAll('.check.done').length;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('progress-fill').style.width = (done/total*100)+'%';
+    document.getElementById('progress-text').textContent = done+' / '+total+' done';
+  }
+</script>
+</body>
+</html>

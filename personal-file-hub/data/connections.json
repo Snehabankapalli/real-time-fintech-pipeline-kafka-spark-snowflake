@@ -1,0 +1,112 @@
+[
+  {
+    "id": "gmail",
+    "name": "Gmail",
+    "icon": "📧",
+    "description": "Read emails for context, summaries, and reminders",
+    "connected": false,
+    "type": "oauth",
+    "riskLevel": "high",
+    "category": "Communication"
+  },
+  {
+    "id": "google-calendar",
+    "name": "Google Calendar",
+    "icon": "📅",
+    "description": "Schedule events, track appointments, block focus time",
+    "connected": true,
+    "type": "oauth",
+    "riskLevel": "medium",
+    "category": "Productivity"
+  },
+  {
+    "id": "google-drive",
+    "name": "Google Drive",
+    "icon": "📁",
+    "description": "Access documents and files for context and editing",
+    "connected": false,
+    "type": "oauth",
+    "riskLevel": "high",
+    "category": "Storage"
+  },
+  {
+    "id": "apple-health",
+    "name": "Apple Health Export",
+    "icon": "🍎",
+    "description": "Upload Health XML export for fitness and wellness data",
+    "connected": false,
+    "type": "manual-upload",
+    "riskLevel": "medium",
+    "category": "Health"
+  },
+  {
+    "id": "icloud-files",
+    "name": "iCloud Files",
+    "icon": "☁️",
+    "description": "Manual upload of files from iCloud Drive",
+    "connected": false,
+    "type": "manual-upload",
+    "riskLevel": "low",
+    "category": "Storage"
+  },
+  {
+    "id": "bank-csv",
+    "name": "Bank CSV Upload",
+    "icon": "🏦",
+    "description": "Upload bank statement CSVs for financial tracking",
+    "connected": true,
+    "type": "manual-upload",
+    "riskLevel": "medium",
+    "category": "Finance"
+  },
+  {
+    "id": "photos-upload",
+    "name": "Photos (Manual Upload)",
+    "icon": "📸",
+    "description": "Upload photos manually for visual tracking and analysis",
+    "connected": false,
+    "type": "manual-upload",
+    "riskLevel": "low",
+    "category": "Personal"
+  },
+  {
+    "id": "notion",
+    "name": "Notion",
+    "icon": "📝",
+    "description": "Access Notion pages, databases, and notes",
+    "connected": false,
+    "type": "api-key",
+    "riskLevel": "medium",
+    "category": "Productivity"
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "icon": "🐙",
+    "description": "Access repositories, commits, and activity",
+    "connected": true,
+    "type": "oauth",
+    "riskLevel": "medium",
+    "category": "Development"
+  },
+  {
+    "id": "claude-files",
+    "name": "Claude Vault Files",
+    "icon": "🤖",
+    "description": "HTML files and interactive tools in your vault",
+    "connected": true,
+    "type": "local",
+    "riskLevel": "low",
+    "category": "Development"
+  },
+  {
+    "id": "local-notes",
+    "name": "Local Notes",
+    "icon": "📓",
+    "description": "Markdown notes stored locally on your machine",
+    "connected": true,
+    "type": "local",
+    "riskLevel": "low",
+    "category": "Personal"
+  }
+]

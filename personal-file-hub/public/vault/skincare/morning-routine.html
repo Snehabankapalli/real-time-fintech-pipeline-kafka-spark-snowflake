@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Skincare Routine</title>
+<style>
+  :root{--bg:#080811;--surface:#111122;--border:#1a1a2e;--accent:#ec4899;--text:#f8f8f2;--muted:#6e6e8a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:2rem;min-height:100vh;}
+  h1{font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,#f9a8d4,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .subtitle{color:var(--muted);font-size:.9rem;margin-bottom:2rem;}
+  .step{display:flex;gap:1rem;margin-bottom:1rem;background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;transition:all .2s;cursor:pointer;}
+  .step:hover{border-color:rgba(236,72,153,.3);}
+  .step.done{border-color:rgba(236,72,153,.4);background:rgba(236,72,153,.04);}
+  .step-num{width:32px;height:32px;border-radius:50%;background:rgba(236,72,153,.15);color:#f9a8d4;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0;}
+  .step.done .step-num{background:var(--accent);color:white;}
+  .step-content{flex:1;}
+  .step-name{font-weight:600;font-size:.95rem;margin-bottom:.2rem;}
+  .step-product{font-size:.8rem;color:#f9a8d4;margin-bottom:.25rem;}
+  .step-how{font-size:.8rem;color:var(--muted);line-height:1.5;}
+  .step-time{font-size:.75rem;color:var(--muted);flex-shrink:0;}
+  .tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;}
+  .tag{background:rgba(236,72,153,.08);color:#f9a8d4;border:1px solid rgba(236,72,153,.15);border-radius:9999px;padding:.1rem .5rem;font-size:.7rem;}
+  .summary{background:linear-gradient(135deg,rgba(236,72,153,.08),rgba(167,139,250,.08));border:1px solid rgba(236,72,153,.15);border-radius:.75rem;padding:1.25rem;margin-bottom:1.5rem;}
+  .summary-row{display:flex;justify-content:space-between;align-items:center;}
+  .summary-stat{text-align:center;}
+  .summary-num{font-size:1.5rem;font-weight:700;color:#f9a8d4;}
+  .summary-label{font-size:.75rem;color:var(--muted);}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:1rem;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#ec4899,#a855f7);border-radius:2px;transition:width .5s;}
+</style>
+</head>
+<body>
+<h1>Morning Skincare ✨</h1>
+<p class="subtitle">Daily routine · Sensitive skin protocol · 12 min total</p>
+
+<div class="summary">
+  <div class="summary-row">
+    <div class="summary-stat"><div class="summary-num" id="done-count">0</div><div class="summary-label">Done</div></div>
+    <div class="summary-stat"><div class="summary-num">5</div><div class="summary-label">Steps</div></div>
+    <div class="summary-stat"><div class="summary-num">12</div><div class="summary-label">Minutes</div></div>
+    <div class="summary-stat"><div class="summary-num">🔥 5</div><div class="summary-label">Day streak</div></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+</div>
+
+<div class="step" onclick="toggleStep(this)">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <div class="step-name">Gentle Cleanse</div>
+    <div class="step-product">CeraVe Hydrating Cleanser</div>
+    <div class="step-how">Lukewarm water only. Circular motions for 60 seconds. Pat dry, don't rub.</div>
+    <div class="tags"><span class="tag">cleansing</span><span class="tag">hydrating</span></div>
+  </div>
+  <div class="step-time">2 min</div>
+</div>
+
+<div class="step" onclick="toggleStep(this)">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <div class="step-name">Hydrating Toner</div>
+    <div class="step-product">Klairs Supple Preparation Toner</div>
+    <div class="step-how">Hands method — press gently into skin until absorbed. 2–3 layers if needed.</div>
+    <div class="tags"><span class="tag">toning</span><span class="tag">hydrating</span></div>
+  </div>
+  <div class="step-time">2 min</div>
+</div>
+
+<div class="step" onclick="toggleStep(this)">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <div class="step-name">Vitamin C Serum</div>
+    <div class="step-product">Timeless 20% Vitamin C</div>
+    <div class="step-how">3 drops on forehead, cheeks, chin, nose. Spread and let absorb 90 seconds before next step.</div>
+    <div class="tags"><span class="tag">brightening</span><span class="tag">antioxidant</span></div>
+  </div>
+  <div class="step-time">3 min</div>
+</div>
+
+<div class="step" onclick="toggleStep(this)">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    <div class="step-name">Moisturizer</div>
+    <div class="step-product">La Roche-Posay Toleriane Double Repair</div>
+    <div class="step-how">Pea-sized amount. Focus on dry areas. Include neck.</div>
+    <div class="tags"><span class="tag">moisturizing</span><span class="tag">ceramides</span></div>
+  </div>
+  <div class="step-time">2 min</div>
+</div>
+
+<div class="step" onclick="toggleStep(this)">
+  <div class="step-num">5</div>
+  <div class="step-content">
+    <div class="step-name">SPF 50+</div>
+    <div class="step-product">Altruist SPF 50 Sunscreen</div>
+    <div class="step-how">⚠️ Never skip. 2 finger-lengths for face. Reapply at noon if outdoors.</div>
+    <div class="tags"><span class="tag">SPF</span><span class="tag">protection</span><span class="tag">must-do</span></div>
+  </div>
+  <div class="step-time">2 min</div>
+</div>
+
+<script>
+function toggleStep(el){
+  el.classList.toggle('done');
+  const done=document.querySelectorAll('.step.done').length;
+  document.getElementById('done-count').textContent=done;
+  document.getElementById('prog').style.width=(done/5*100)+'%';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monthly Budget Calculator</title>
+<style>
+  :root{--bg:#080811;--surface:#111122;--border:#1a1a2e;--accent:#f59e0b;--green:#10b981;--red:#ef4444;--text:#f8f8f2;--muted:#6e6e8a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:2rem;min-height:100vh;}
+  h1{font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .subtitle{color:var(--muted);font-size:.9rem;margin-bottom:2rem;}
+  .overview{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;}
+  .card-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;}
+  .card-value{font-size:1.6rem;font-weight:700;}
+  .green{color:var(--green);}
+  .red{color:var(--red);}
+  .amber{color:var(--accent);}
+  .category-list{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;overflow:hidden;margin-bottom:1rem;}
+  .cat-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .cat-title{font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#fbbf24;}
+  .cat-total{font-size:.85rem;font-weight:600;}
+  .cat-row{display:flex;align-items:center;padding:.75rem 1.5rem;border-bottom:1px solid var(--border);transition:background .2s;}
+  .cat-row:last-child{border-bottom:none;}
+  .cat-row:hover{background:rgba(255,255,255,.02);}
+  .cat-name{flex:1;font-size:.9rem;}
+  .cat-bar-wrap{flex:2;margin:0 1rem;}
+  .cat-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .cat-bar-fill{height:100%;border-radius:3px;transition:width .5s ease;}
+  .cat-amount{font-size:.85rem;font-weight:600;min-width:4rem;text-align:right;}
+  input.amount{width:80px;background:#0a0a18;border:1px solid var(--border);border-radius:.375rem;padding:.3rem .5rem;color:var(--text);font-size:.85rem;text-align:right;outline:none;}
+  input.amount:focus{border-color:var(--accent);}
+</style>
+</head>
+<body>
+<h1>Monthly Budget</h1>
+<p class="subtitle">March 2024 · Track spending across all categories</p>
+
+<div class="overview">
+  <div class="card"><div class="card-label">Income</div><div class="card-value green" id="income-total">$8,500</div></div>
+  <div class="card"><div class="card-label">Expenses</div><div class="card-value red" id="expense-total">$4,820</div></div>
+  <div class="card"><div class="card-label">Remaining</div><div class="card-value amber" id="remaining">$3,680</div></div>
+</div>
+
+<div class="category-list">
+  <div class="cat-header"><div class="cat-title">🏠 Housing</div><div class="cat-total">$2,100</div></div>
+  <div class="cat-row"><div class="cat-name">Rent</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:100%;background:#f59e0b"></div></div></div><div class="cat-amount">$1,800</div></div>
+  <div class="cat-row"><div class="cat-name">Utilities</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:30%;background:#f59e0b"></div></div></div><div class="cat-amount">$180</div></div>
+  <div class="cat-row"><div class="cat-name">Internet</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:14%;background:#f59e0b"></div></div></div><div class="cat-amount">$120</div></div>
+</div>
+
+<div class="category-list">
+  <div class="cat-header"><div class="cat-title">🛒 Food & Groceries</div><div class="cat-total">$820</div></div>
+  <div class="cat-row"><div class="cat-name">Groceries</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:61%;background:#10b981"></div></div></div><div class="cat-amount">$500</div></div>
+  <div class="cat-row"><div class="cat-name">Dining Out</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:27%;background:#10b981"></div></div></div><div class="cat-amount">$220</div></div>
+  <div class="cat-row"><div class="cat-name">Coffee</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:12%;background:#10b981"></div></div></div><div class="cat-amount">$100</div></div>
+</div>
+
+<div class="category-list">
+  <div class="cat-header"><div class="cat-title">💪 Health & Fitness</div><div class="cat-total">$340</div></div>
+  <div class="cat-row"><div class="cat-name">Gym Membership</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:35%;background:#a78bfa"></div></div></div><div class="cat-amount">$120</div></div>
+  <div class="cat-row"><div class="cat-name">Pilates Classes</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:50%;background:#a78bfa"></div></div></div><div class="cat-amount">$170</div></div>
+  <div class="cat-row"><div class="cat-name">Supplements</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:15%;background:#a78bfa"></div></div></div><div class="cat-amount">$50</div></div>
+</div>
+
+<div class="category-list">
+  <div class="cat-header"><div class="cat-title">📱 Subscriptions</div><div class="cat-total">$160</div></div>
+  <div class="cat-row"><div class="cat-name">Claude Pro</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:13%;background:#60a5fa"></div></div></div><div class="cat-amount">$20</div></div>
+  <div class="cat-row"><div class="cat-name">Spotify</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:7%;background:#60a5fa"></div></div></div><div class="cat-amount">$10</div></div>
+  <div class="cat-row"><div class="cat-name">Other Software</div><div class="cat-bar-wrap"><div class="cat-bar"><div class="cat-bar-fill" style="width:80%;background:#60a5fa"></div></div></div><div class="cat-amount">$130</div></div>
+</div>
+
+<div style="margin-top:1rem;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:.75rem;padding:1rem;font-size:.85rem;color:var(--muted)">
+  💡 <strong style="color:var(--green)">On track!</strong> You are saving 43% of income this month. Dining out increased by $70 vs February.
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "fitness-back-workout",
+    "title": "Back Workout Plan",
+    "category": "Fitness",
+    "path": "/vault/fitness/back-workout.html",
+    "tags": ["workout", "strength", "back"],
+    "status": "active",
+    "createdBy": "Claude",
+    "notes": "Needs mobile polish",
+    "createdAt": "2024-03-01",
+    "updatedAt": "2024-03-15"
+  },
+  {
+    "id": "fitness-pilates-tracker",
+    "title": "Pilates Progress Tracker",
+    "category": "Fitness",
+    "path": "/vault/fitness/pilates-tracker.html",
+    "tags": ["pilates", "flexibility", "core"],
+    "status": "active",
+    "createdBy": "Claude",
+    "notes": "Add monthly reset feature",
+    "createdAt": "2024-02-10",
+    "updatedAt": "2024-02-20"
+  },
+  {
+    "id": "career-resume-builder",
+    "title": "Resume Builder",
+    "category": "Career",
+    "path": "/vault/career/resume-builder.html",
+    "tags": ["resume", "job", "career"],
+    "status": "active",
+    "createdBy": "Claude",
+    "notes": "Add PDF export",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-02-01"
+  },
+  {
+    "id": "career-interview-prep",
+    "title": "Interview Prep Checklist",
+    "category": "Career",
+    "path": "/vault/career/interview-prep.html",
+    "tags": ["interview", "prep", "checklist"],
+    "status": "draft",
+    "createdBy": "Claude",
+    "notes": "Add behavioral questions section",
+    "createdAt": "2024-03-05",
+    "updatedAt": "2024-03-05"
+  },
+  {
+    "id": "finance-budget-calculator",
+    "title": "Monthly Budget Calculator",
+    "category": "Finance",
+    "path": "/vault/finance/budget-calculator.html",
+    "tags": ["budget", "money", "expenses"],
+    "status": "active",
+    "createdBy": "Claude",
+    "notes": "Integrate with bank CSV",
+    "createdAt": "2024-01-20",
+    "updatedAt": "2024-03-01"
+  },
+  {
+    "id": "skincare-morning-routine",
+    "title": "Morning Skincare Routine",
+    "category": "Skincare",
+    "path": "/vault/skincare/morning-routine.html",
+    "tags": ["skincare", "routine", "morning"],
+    "status": "active",
+    "createdBy": "Claude",
+    "notes": "Add product tracker",
+    "createdAt": "2024-02-01",
+    "updatedAt": "2024-02-15"
+  },
+  {
+    "id": "agents-hub-overview",
+    "title": "Agent Hub Overview",
+    "category": "Agents",
+    "path": "/vault/agents/agent-hub.html",
+    "tags": ["agents", "AI", "hub"],
+    "status": "active",
+    "createdBy": "Claude",
+    "notes": "Prototype — needs real data",
+    "createdAt": "2024-03-10",
+    "updatedAt": "2024-03-10"
+  }
+]

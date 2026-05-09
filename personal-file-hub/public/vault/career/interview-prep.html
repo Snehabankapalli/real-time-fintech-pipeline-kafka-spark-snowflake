@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Prep Checklist</title>
+<style>
+  :root{--bg:#080811;--surface:#111122;--border:#1a1a2e;--accent:#3b82f6;--text:#f8f8f2;--muted:#6e6e8a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:2rem;min-height:100vh;}
+  h1{font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,#60a5fa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .subtitle{color:var(--muted);font-size:.9rem;margin-bottom:2rem;}
+  .section{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;margin-bottom:1rem;overflow:hidden;}
+  .section-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .section-name{font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:.5rem;}
+  .section-progress{font-size:.8rem;color:var(--muted);}
+  .item{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1.25rem;border-bottom:1px solid rgba(26,26,46,.5);cursor:pointer;transition:background .2s;}
+  .item:last-child{border-bottom:none;}
+  .item:hover{background:rgba(255,255,255,.02);}
+  .item.done .item-text{text-decoration:line-through;color:var(--muted);}
+  .checkbox{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;transition:all .2s;margin-top:1px;}
+  .item.done .checkbox{background:var(--accent);border-color:var(--accent);}
+  .item-text{font-size:.875rem;line-height:1.4;}
+  .item-sub{font-size:.75rem;color:var(--muted);margin-top:.2rem;}
+  .badge{display:inline-block;border-radius:9999px;padding:.1rem .5rem;font-size:.7rem;font-weight:600;}
+  .badge-blue{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2);}
+  .badge-yellow{background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2);}
+  .badge-red{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2);}
+</style>
+</head>
+<body>
+<h1>Interview Prep</h1>
+<p class="subtitle">Comprehensive checklist for senior engineering interviews</p>
+
+<div class="section">
+  <div class="section-header"><div class="section-name">📋 Before the Interview</div><div class="section-progress"><span class="badge badge-blue">Research</span></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Research the company's data stack and engineering blog</div><div class="item-sub">Look for blog posts, job descriptions, LinkedIn engineers</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Understand their product and how data flows through it</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Review your last 3 projects for STAR stories</div><div class="item-sub">Situation · Task · Action · Result format</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Prepare 5 insightful questions to ask the panel</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Test video setup, lighting, and microphone</div></div></div>
+</div>
+
+<div class="section">
+  <div class="section-header"><div class="section-name">🧠 Technical Prep</div><div class="section-progress"><span class="badge badge-yellow">Practice</span></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">System design: design a real-time streaming pipeline</div><div class="item-sub">Kafka → Spark → Snowflake architecture walkthrough</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">SQL: window functions, CTEs, query optimization</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Python: data processing patterns, async, testing</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Review data modeling: star schema vs Kimball</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">Prepare to whiteboard: idempotency, at-least-once delivery</div></div></div>
+</div>
+
+<div class="section">
+  <div class="section-header"><div class="section-name">💬 Behavioral Questions</div><div class="section-progress"><span class="badge badge-red">Critical</span></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">"Tell me about a time you fixed a critical production issue"</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">"Describe your most impactful data engineering project"</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">"How do you handle disagreements with stakeholders?"</div></div></div>
+  <div class="item" onclick="toggle(this)"><div class="checkbox"></div><div><div class="item-text">"What's a technical decision you'd make differently today?"</div></div></div>
+</div>
+
+<script>
+function toggle(el){ el.classList.toggle('done'); }
+</script>
+</body>
+</html>
