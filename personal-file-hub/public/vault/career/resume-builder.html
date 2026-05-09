@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Builder</title>
+<style>
+  :root{--bg:#080811;--surface:#111122;--border:#1a1a2e;--accent:#3b82f6;--text:#f8f8f2;--muted:#6e6e8a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:2rem;min-height:100vh;}
+  .layout{display:grid;grid-template-columns:1fr 2fr;gap:2rem;max-width:960px;margin:0 auto;}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1.5rem;}
+  h1{font-size:1.6rem;font-weight:700;background:linear-gradient(90deg,#60a5fa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem;}
+  .subtitle{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem;}
+  label{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;}
+  input,textarea{width:100%;background:#0a0a18;border:1px solid var(--border);border-radius:.5rem;padding:.6rem .8rem;color:var(--text);font-size:.85rem;font-family:inherit;margin-bottom:1rem;outline:none;transition:border-color .2s;}
+  input:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical;min-height:80px;}
+  .section-title{font-size:.8rem;font-weight:600;color:#60a5fa;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:white;border:none;border-radius:.5rem;padding:.6rem 1.2rem;font-size:.85rem;font-weight:600;cursor:pointer;transition:opacity .2s;}
+  .btn:hover{opacity:.9;}
+  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn-outline:hover{border-color:var(--accent);color:#60a5fa;}
+  .chip{display:inline-block;background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2);border-radius:9999px;padding:.2rem .6rem;font-size:.72rem;margin:.2rem;}
+  .exp-entry{background:#0a0a18;border:1px solid var(--border);border-radius:.5rem;padding:1rem;margin-bottom:.75rem;}
+  .exp-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;}
+  .exp-title{font-weight:600;font-size:.9rem;}
+  .exp-date{font-size:.75rem;color:var(--muted);}
+  .exp-company{font-size:.8rem;color:#60a5fa;}
+  .exp-desc{font-size:.8rem;color:var(--muted);margin-top:.5rem;line-height:1.5;}
+</style>
+</head>
+<body>
+<div style="max-width:960px;margin:0 auto;padding-bottom:2rem">
+<h1>Resume Builder</h1>
+<p class="subtitle">Build a polished resume with Claude's help · Export to PDF</p>
+
+<div class="layout">
+  <div>
+    <div class="panel" style="margin-bottom:1rem">
+      <div class="section-title">Personal Info</div>
+      <label>Full Name</label><input type="text" value="Your Name" />
+      <label>Job Title</label><input type="text" value="Senior Data Engineer" />
+      <label>Location</label><input type="text" value="San Francisco, CA" />
+      <label>Email</label><input type="text" value="you@email.com" />
+      <label>LinkedIn / GitHub</label><input type="text" value="linkedin.com/in/yourname" />
+    </div>
+    <div class="panel">
+      <div class="section-title">Skills</div>
+      <div>
+        <span class="chip">Python</span><span class="chip">Kafka</span><span class="chip">Spark</span>
+        <span class="chip">Snowflake</span><span class="chip">dbt</span><span class="chip">Airflow</span>
+        <span class="chip">PostgreSQL</span><span class="chip">AWS</span><span class="chip">Terraform</span>
+      </div>
+      <input type="text" placeholder="Add skill..." style="margin-top:.75rem" />
+      <button class="btn btn-outline" style="width:100%;justify-content:center">+ Add Skill</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel" style="margin-bottom:1rem">
+      <div class="section-title">Summary</div>
+      <textarea>Senior data engineer with 6+ years building real-time data pipelines, streaming architectures, and scalable data platforms. Passionate about turning raw data into reliable, fast, and actionable insights.</textarea>
+    </div>
+    <div class="panel" style="margin-bottom:1rem">
+      <div class="section-title">Experience</div>
+      <div class="exp-entry">
+        <div class="exp-header"><div><div class="exp-title">Senior Data Engineer</div><div class="exp-company">Stripe · Full-time</div></div><div class="exp-date">2022 – Present</div></div>
+        <div class="exp-desc">• Built real-time payment analytics pipeline processing 2M events/sec<br>• Led migration from batch ETL to Kafka streaming architecture<br>• Reduced data latency from 4 hours to under 30 seconds</div>
+      </div>
+      <div class="exp-entry">
+        <div class="exp-header"><div><div class="exp-title">Data Engineer</div><div class="exp-company">Airbnb · Full-time</div></div><div class="exp-date">2020 – 2022</div></div>
+        <div class="exp-desc">• Maintained and scaled Spark-based data warehouse<br>• Built dbt models serving 50+ analytics dashboards</div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;justify-content:center">+ Add Experience</button>
+    </div>
+    <button class="btn" style="width:100%;justify-content:center">Export to PDF</button>
+  </div>
+</div>
+</div>
+</body>
+</html>

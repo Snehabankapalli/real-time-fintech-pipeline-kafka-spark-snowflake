@@ -1,0 +1,160 @@
+[
+  {
+    "id": "fitness-coach",
+    "name": "Fitness Coach",
+    "icon": "🏋️",
+    "category": "Health",
+    "purpose": "Analyzes your workout history, suggests personalized routines, tracks progress, and keeps you accountable to your fitness goals.",
+    "allowedDataSources": ["apple-health", "local-notes", "claude-files"],
+    "actions": ["analyze-workout-history", "suggest-routine", "track-progress", "send-reminders"],
+    "riskLevel": "low",
+    "requiresApproval": false,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-15T08:00:00", "action": "Analyzed weekly workout data", "status": "success" },
+      { "timestamp": "2024-03-14T07:30:00", "action": "Generated Monday routine suggestion", "status": "success" },
+      { "timestamp": "2024-03-13T08:00:00", "action": "Logged back workout session", "status": "success" }
+    ],
+    "notes": "Focus on strength training and pilates. No cardio-heavy suggestions.",
+    "createdAt": "2024-01-01"
+  },
+  {
+    "id": "finance-advisor",
+    "name": "Finance Advisor",
+    "icon": "💰",
+    "category": "Finance",
+    "purpose": "Reviews your spending patterns, tracks budget categories, flags unusual expenses, and provides savings recommendations.",
+    "allowedDataSources": ["bank-csv", "local-notes"],
+    "actions": ["analyze-spending", "categorize-expenses", "flag-anomalies", "suggest-savings"],
+    "riskLevel": "medium",
+    "requiresApproval": true,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-14T09:00:00", "action": "Monthly spending report generated", "status": "success" },
+      { "timestamp": "2024-03-13T10:00:00", "action": "Unusual transaction flagged — awaiting approval", "status": "pending" }
+    ],
+    "notes": "Only reads bank CSV exports. No direct bank access ever.",
+    "createdAt": "2024-01-15"
+  },
+  {
+    "id": "career-coach",
+    "name": "Career Coach",
+    "icon": "🎯",
+    "category": "Career",
+    "purpose": "Helps optimize your resume, prepares you for interviews, tracks job applications, and aligns career moves with your goals.",
+    "allowedDataSources": ["local-notes", "github", "claude-files"],
+    "actions": ["review-resume", "prep-interview", "track-applications", "suggest-opportunities"],
+    "riskLevel": "low",
+    "requiresApproval": false,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-12T11:00:00", "action": "Resume review completed", "status": "success" },
+      { "timestamp": "2024-03-10T14:00:00", "action": "Interview prep session generated", "status": "success" }
+    ],
+    "notes": "Currently focused on senior data engineering roles at Series B+ companies.",
+    "createdAt": "2024-02-01"
+  },
+  {
+    "id": "skincare-tracker",
+    "name": "Skincare Tracker",
+    "icon": "✨",
+    "category": "Health",
+    "purpose": "Logs your skincare routine, tracks product reactions, suggests routine adjustments based on skin conditions.",
+    "allowedDataSources": ["local-notes", "photos-upload", "claude-files"],
+    "actions": ["log-routine", "track-products", "analyze-reactions", "suggest-adjustments"],
+    "riskLevel": "low",
+    "requiresApproval": false,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-15T07:00:00", "action": "Morning routine logged", "status": "success" },
+      { "timestamp": "2024-03-14T07:00:00", "action": "Morning routine logged", "status": "success" }
+    ],
+    "notes": "Sensitive skin — avoid retinol suggestions without explicit request.",
+    "createdAt": "2024-02-15"
+  },
+  {
+    "id": "home-garden-agent",
+    "name": "Home & Garden Agent",
+    "icon": "🏡",
+    "category": "Home",
+    "purpose": "Manages home maintenance schedules, garden care reminders, and household task planning.",
+    "allowedDataSources": ["local-notes", "google-calendar"],
+    "actions": ["schedule-maintenance", "garden-reminders", "task-planning", "seasonal-checklist"],
+    "riskLevel": "low",
+    "requiresApproval": false,
+    "status": "idle",
+    "activityLog": [],
+    "notes": "Focus on low-maintenance garden plants. Spring schedule pending setup.",
+    "createdAt": "2024-03-01"
+  },
+  {
+    "id": "meal-prep-agent",
+    "name": "Meal Prep Agent",
+    "icon": "🥗",
+    "category": "Health",
+    "purpose": "Plans weekly meals, generates shopping lists, tracks nutrition, and suggests recipes based on your dietary preferences.",
+    "allowedDataSources": ["local-notes", "apple-health"],
+    "actions": ["plan-meals", "generate-shopping-list", "track-nutrition", "suggest-recipes"],
+    "riskLevel": "low",
+    "requiresApproval": false,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-11T12:00:00", "action": "Weekly meal plan generated", "status": "success" },
+      { "timestamp": "2024-03-11T12:05:00", "action": "Shopping list exported", "status": "success" }
+    ],
+    "notes": "Vegetarian-friendly, high protein focus. Avoid gluten where possible.",
+    "createdAt": "2024-02-20"
+  },
+  {
+    "id": "job-search-agent",
+    "name": "Job Search Agent",
+    "icon": "🔍",
+    "category": "Career",
+    "purpose": "Tracks job applications, finds relevant postings, tailors resume for specific roles, and manages interview pipeline.",
+    "allowedDataSources": ["local-notes", "github", "claude-files"],
+    "actions": ["track-applications", "find-opportunities", "tailor-resume", "manage-pipeline"],
+    "riskLevel": "low",
+    "requiresApproval": false,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-15T09:00:00", "action": "3 new matching roles identified", "status": "success" },
+      { "timestamp": "2024-03-14T14:00:00", "action": "Application status updated for Stripe", "status": "success" }
+    ],
+    "notes": "Focus on senior data/ML engineering roles. Remote-first companies preferred.",
+    "createdAt": "2024-03-01"
+  },
+  {
+    "id": "personal-ops-agent",
+    "name": "Personal Ops Agent",
+    "icon": "⚙️",
+    "category": "Operations",
+    "purpose": "Your personal chief of staff — manages tasks, priorities, calendar, and cross-domain coordination across your life systems.",
+    "allowedDataSources": ["google-calendar", "local-notes", "notion"],
+    "actions": ["manage-tasks", "prioritize-backlog", "schedule-events", "weekly-review"],
+    "riskLevel": "medium",
+    "requiresApproval": true,
+    "status": "active",
+    "activityLog": [
+      { "timestamp": "2024-03-15T06:00:00", "action": "Weekly review prepared", "status": "success" },
+      { "timestamp": "2024-03-14T18:00:00", "action": "Calendar blocked for deep work", "status": "success" },
+      { "timestamp": "2024-03-14T08:00:00", "action": "Morning briefing delivered", "status": "success" }
+    ],
+    "notes": "Morning briefing at 7am. Weekly review on Sundays. Approval required for calendar writes.",
+    "createdAt": "2024-01-01"
+  },
+  {
+    "id": "relationship-reflection-agent",
+    "name": "Relationship Reflection Agent",
+    "icon": "💭",
+    "category": "Personal",
+    "purpose": "Private journaling assistant for relationships — helps process conversations, track patterns, and reflect on meaningful connections.",
+    "allowedDataSources": ["local-notes"],
+    "actions": ["journal-reflection", "track-patterns", "suggest-conversations", "private-notes"],
+    "riskLevel": "high",
+    "requiresApproval": true,
+    "status": "idle",
+    "activityLog": [],
+    "notes": "Highly private. Local notes only — no cloud sync, no API calls, no external data ever.",
+    "createdAt": "2024-03-10"
+  }
+]

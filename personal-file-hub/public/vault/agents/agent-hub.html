@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Hub Overview</title>
+<style>
+  :root{--bg:#080811;--surface:#111122;--border:#1a1a2e;--accent:#7c3aed;--text:#f8f8f2;--muted:#6e6e8a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:2rem;min-height:100vh;}
+  h1{font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .subtitle{color:var(--muted);font-size:.9rem;margin-bottom:2rem;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1rem;text-align:center;}
+  .stat-num{font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .stat-label{font-size:.75rem;color:var(--muted);margin-top:.2rem;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;}
+  .agent-card{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;transition:all .2s;}
+  .agent-card:hover{border-color:rgba(124,58,237,.4);transform:translateY(-1px);}
+  .agent-icon{font-size:2rem;margin-bottom:.75rem;}
+  .agent-name{font-weight:700;font-size:.95rem;margin-bottom:.25rem;}
+  .agent-cat{font-size:.75rem;color:var(--muted);margin-bottom:.75rem;}
+  .agent-purpose{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:.75rem;}
+  .agent-footer{display:flex;align-items:center;justify-content:space-between;}
+  .status-dot{display:flex;align-items:center;gap:.35rem;font-size:.75rem;}
+  .dot{width:7px;height:7px;border-radius:50%;}
+  .dot.active{background:#10b981;}
+  .dot.idle{background:#6e6e8a;}
+  .risk{font-size:.7rem;border-radius:9999px;padding:.15rem .5rem;}
+  .risk.low{background:rgba(16,185,129,.1);color:#10b981;}
+  .risk.medium{background:rgba(245,158,11,.1);color:#fbbf24;}
+  .risk.high{background:rgba(239,68,68,.1);color:#f87171;}
+  .approval{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.2);font-size:.7rem;border-radius:9999px;padding:.15rem .5rem;}
+</style>
+</head>
+<body>
+<h1>Agent Hub</h1>
+<p class="subtitle">Your personal AI agents — permission-controlled, purpose-built</p>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">9</div><div class="stat-label">Total Agents</div></div>
+  <div class="stat"><div class="stat-num">7</div><div class="stat-label">Active</div></div>
+  <div class="stat"><div class="stat-num">11</div><div class="stat-label">Connected Sources</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">Require Approval</div></div>
+</div>
+
+<div class="grid">
+  <div class="agent-card">
+    <div class="agent-icon">🏋️</div>
+    <div class="agent-name">Fitness Coach</div>
+    <div class="agent-cat">Health</div>
+    <div class="agent-purpose">Workout analysis, routine suggestions, progress tracking</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="risk low">Low risk</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">💰</div>
+    <div class="agent-name">Finance Advisor</div>
+    <div class="agent-cat">Finance</div>
+    <div class="agent-purpose">Spending patterns, budget tracking, savings recommendations</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="approval">Approval required</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">🎯</div>
+    <div class="agent-name">Career Coach</div>
+    <div class="agent-cat">Career</div>
+    <div class="agent-purpose">Resume review, interview prep, application tracking</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="risk low">Low risk</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">✨</div>
+    <div class="agent-name">Skincare Tracker</div>
+    <div class="agent-cat">Health</div>
+    <div class="agent-purpose">Routine logging, product tracking, reaction analysis</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="risk low">Low risk</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">🥗</div>
+    <div class="agent-name">Meal Prep Agent</div>
+    <div class="agent-cat">Health</div>
+    <div class="agent-purpose">Weekly meal planning, shopping lists, nutrition tracking</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="risk low">Low risk</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">⚙️</div>
+    <div class="agent-name">Personal Ops Agent</div>
+    <div class="agent-cat">Operations</div>
+    <div class="agent-purpose">Chief of staff — tasks, calendar, weekly review</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="approval">Approval required</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">🏡</div>
+    <div class="agent-name">Home & Garden Agent</div>
+    <div class="agent-cat">Home</div>
+    <div class="agent-purpose">Maintenance schedules, garden care, household tasks</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot idle"></div>Idle</div><span class="risk low">Low risk</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">🔍</div>
+    <div class="agent-name">Job Search Agent</div>
+    <div class="agent-cat">Career</div>
+    <div class="agent-purpose">Application tracking, opportunity scouting, pipeline management</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot active"></div>Active</div><span class="risk low">Low risk</span></div>
+  </div>
+  <div class="agent-card">
+    <div class="agent-icon">💭</div>
+    <div class="agent-name">Relationship Reflection</div>
+    <div class="agent-cat">Personal</div>
+    <div class="agent-purpose">Private journaling, pattern recognition, reflection prompts</div>
+    <div class="agent-footer"><div class="status-dot"><div class="dot idle"></div>Idle</div><span class="risk high">High risk</span></div>
+  </div>
+</div>
+
+<div style="margin-top:2rem;background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.15);border-radius:.75rem;padding:1rem;font-size:.8rem;color:var(--muted)">
+  🔒 <strong style="color:#a78bfa">Permission Layer Active</strong> — All agents access data through approved connectors only. No unrestricted device access. Every write action by high-risk agents requires manual approval.
+</div>
+</body>
+</html>
